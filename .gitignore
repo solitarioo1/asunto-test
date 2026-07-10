@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.Python
+build/
+dist/
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+
+# Variables de entorno / secretos
+.env
+.env.*
+
+# Archivos temporales de PDFs subidos (por si se guardan en local en algún momento)
+*.zip
+uploads/
+tmp/
+
+# Editores / IDE
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
