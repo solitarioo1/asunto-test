@@ -14,29 +14,7 @@
   <p class="alerta">{{ error }}</p>
   {% endif %}
 
-  <form method="post" action="/procesar" enctype="multipart/form-data" id="form-subida">
-    <label class="etiqueta">Archivos (ZIP, PDF sueltos o una carpeta)</label>
-
-    <div class="dropzone" id="dropzone">
-      <p class="dropzone__titulo">Arrastra tus archivos aquí</p>
-      <p class="dropzone__subtitulo">o haz clic para seleccionar (ZIP, PDF)</p>
-      <p class="dropzone__lista" id="dropzone-lista"></p>
-    </div>
-
-    <input type="file" id="input-archivos" name="archivos" multiple accept=".zip,.pdf" hidden>
-    <input type="file" id="input-carpeta" webkitdirectory multiple hidden>
-    <button type="button" id="btn-carpeta" class="enlace-carpeta">o selecciona una carpeta</button>
-
-    <div class="turnstile-envoltura" id="turnstile-envoltura">
-      <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-callback="onTurnstileVerificado"></div>
-    </div>
-    <p class="turnstile-verificado" id="turnstile-verificado" hidden>&#10003; Verificado</p>
-
-    <div class="pie-form">
-      <span class="nota-pie">Los PDF no se almacenan: se procesan en memoria y se descartan.</span>
-      <button type="submit">Generar</button>
-    </div>
-  </form>
+  {% block formulario %}{% endblock %}
 
   {% block content %}{% endblock %}
 </div>
