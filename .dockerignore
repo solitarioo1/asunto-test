@@ -5,3 +5,8 @@ __pycache__/
 .github
 *.ipynb
 README.md
+.env
+.env.*
+deploy/certbot/
+.venv/
+.venv_*/

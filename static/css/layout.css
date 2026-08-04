@@ -1,0 +1,33 @@
+.tarjeta {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--blanco);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+  padding: 28px 32px;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0;
+}
+
+label.etiqueta {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--gris);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}

@@ -1,0 +1,60 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pie-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borde);
+}
+
+.nota-pie {
+  color: var(--gris);
+  font-size: 12px;
+}
+
+button {
+  background: var(--naranja);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  padding: 11px 22px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: .92;
+}
+
+.btn-secundario {
+  display: inline-block;
+  background: var(--blanco);
+  color: var(--gris-oscuro);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 9px 16px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.btn-secundario:hover {
+  background: var(--naranja-suave);
+  border-color: var(--naranja);
+}
+
+.turnstile-verificado {
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 13px;
+  margin: 4px 0 0;
+}

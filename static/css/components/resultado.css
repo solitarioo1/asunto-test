@@ -1,0 +1,41 @@
+.resumen {
+  color: var(--gris-oscuro);
+  margin-bottom: 20px;
+  background: var(--cyan-suave);
+  border: 1px solid var(--cyan);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+}
+
+.bloque {
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: var(--blanco);
+}
+
+.bloque p {
+  margin: 0 0 10px 0;
+}
+
+.bloque b {
+  color: var(--negro);
+}
+
+.alerta {
+  color: var(--negro);
+  background: var(--naranja-suave);
+  border: 1px solid var(--naranja);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.aviso {
+  color: var(--gris);
+  font-size: 12px;
+  margin: -8px 0 24px;
+}

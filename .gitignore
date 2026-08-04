@@ -10,12 +10,21 @@ dist/
 # Entornos virtuales
 venv/
 .venv/
+.venv_*/
 env/
 ENV/
 
-# Variables de entorno / secretos
+# Variables de entorno / secretos (claves de Turnstile, etc.)
 .env
 .env.*
+*.pem
+*.key
+
+# Node (por si se agrega tooling de frontend más adelante)
+node_modules/
+
+# Certificados TLS / datos de Certbot (se generan en el VPS, nunca en el repo)
+deploy/certbot/
 
 # Archivos temporales de PDFs subidos (por si se guardan en local en algún momento)
 *.zip
@@ -36,3 +45,7 @@ Thumbs.db
 # Notebook original de Colab (ya migrado a app.py, no se sube al repo)
 *.ipynb
 .ipynb_checkpoints/
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

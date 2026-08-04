@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="resumen">
+  Archivos procesados: {{ total }} |
+  Con campos faltantes: {{ n_revisar }} |
+  Descartados (no son PDF válidos): {{ n_descartado }} |
+  Con error: {{ n_error }} |
+  OK: {{ ok }}
+</p>
+{% for bloque in bloques %}
+{{ bloque | safe }}
+{% endfor %}
+<a class="btn-secundario" href="/">&larr; Subir otros archivos</a>
+{% endblock %}

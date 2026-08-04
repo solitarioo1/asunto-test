@@ -1,6 +1,29 @@
 services:
   correos:
     build: .
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
+    env_file:
+      - .env
     restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - correos
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    entrypoint: >
+      /bin/sh -c "trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"

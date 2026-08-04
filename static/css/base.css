@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", Calibri, Arial, sans-serif;
+  font-size: 14px;
+  color: var(--negro);
+  margin: 0;
+  padding: 32px 16px;
+  line-height: 1.5;
+  background: var(--fondo);
+}
