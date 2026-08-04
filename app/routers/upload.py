@@ -25,7 +25,7 @@ async def index(request: Request):
 async def procesar(
     request: Request,
     archivos: list[UploadFile] = File(...),
-    cf_turnstile_response: str = Form(default=""),
+    cf_turnstile_response: str = Form(default="", alias="cf-turnstile-response"),
 ):
     ip_cliente = request.client.host if request.client else None
     if not await verificar_turnstile(cf_turnstile_response, ip_cliente):
