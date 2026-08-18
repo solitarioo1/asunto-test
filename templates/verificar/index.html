@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Verificación de acceso{% endblock %}
+{% block formulario %}
+<p class="nota-pie">Confirma que eres humano para poder usar cualquiera de las utilidades del sitio.</p>
+<form method="post" action="/verificar/procesar" id="form-auto-submit">
+  <input type="hidden" name="next" value="{{ next }}">
+
+  <div class="turnstile-envoltura" id="turnstile-envoltura">
+    <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-callback="onTurnstileVerificado"></div>
+  </div>
+  <p class="turnstile-verificado" id="turnstile-verificado" hidden>&#10003; Verificado, continuando…</p>
+</form>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{% endblock %}
