@@ -16,6 +16,16 @@
     });
   });
 
+  const turnstileEnvoltura = document.getElementById("turnstile-envoltura");
+  const turnstileVerificado = document.getElementById("turnstile-verificado");
+
+  window.onTurnstileVerificado = function () {
+    if (turnstileEnvoltura) turnstileEnvoltura.hidden = true;
+    if (turnstileVerificado) turnstileVerificado.hidden = false;
+    const formAuto = document.getElementById("form-auto-submit");
+    if (formAuto) formAuto.submit();
+  };
+
   if (!dropzone || !inputArchivos) return;
 
   const EXTENSIONES_VALIDAS = (dropzone.dataset.extensiones || ".zip,.pdf")
@@ -89,11 +99,4 @@
     });
   }
 
-  const turnstileEnvoltura = document.getElementById("turnstile-envoltura");
-  const turnstileVerificado = document.getElementById("turnstile-verificado");
-
-  window.onTurnstileVerificado = function () {
-    if (turnstileEnvoltura) turnstileEnvoltura.hidden = true;
-    if (turnstileVerificado) turnstileVerificado.hidden = false;
-  };
 })();

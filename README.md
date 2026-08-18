@@ -48,9 +48,15 @@ Copiar `.env` con:
 ```
 TURNSTILE_SITE_KEY=...
 TURNSTILE_SECRET_KEY=...
+SESSION_SECRET_KEY=...
 ```
 
-(claves del widget de Cloudflare Turnstile usado para proteger el formulario de subida).
+- `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`: claves del widget de Cloudflare Turnstile,
+  usado en `/verificar` (verificación anti-bot única al entrar al sitio; ya verificado, la sesión
+  queda habilitada para las 3 utilidades sin volver a pedir el captcha).
+- `SESSION_SECRET_KEY`: clave para firmar la cookie de sesión (`itsdangerous`). Generar una propia
+  por entorno, por ejemplo con `python -c "import secrets; print(secrets.token_hex(32))"` — no
+  reusar la del entorno local en el VPS.
 
 ## Stack
 

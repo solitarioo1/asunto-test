@@ -7,7 +7,7 @@
     "repositoryId": null,
     "repositoryName": null,
     "createdAt": "2026-08-04T13:53:35.856Z",
-    "updatedAt": "2026-08-04T14:12:52.723Z",
+    "updatedAt": "2026-08-18T20:43:12.463Z",
     "languages": [
       "CSS",
       "Dockerfile",
@@ -16,6 +16,7 @@
       "Javascript",
       "Markdown",
       "Python",
+      "Shell",
       "YAML"
     ]
   },
@@ -243,6 +244,90 @@
         },
         {
           "patternId": "Hadolint_SC2086"
+        },
+        {
+          "patternId": "Hadolint_SC1000"
+        },
+        {
+          "patternId": "Hadolint_SC1001"
+        },
+        {
+          "patternId": "Hadolint_SC1007"
+        },
+        {
+          "patternId": "Hadolint_SC1010"
+        },
+        {
+          "patternId": "Hadolint_SC1018"
+        },
+        {
+          "patternId": "Hadolint_SC1035"
+        },
+        {
+          "patternId": "Hadolint_SC1045"
+        },
+        {
+          "patternId": "Hadolint_SC1065"
+        },
+        {
+          "patternId": "Hadolint_SC1066"
+        },
+        {
+          "patternId": "Hadolint_SC1068"
+        },
+        {
+          "patternId": "Hadolint_SC1077"
+        },
+        {
+          "patternId": "Hadolint_SC1078"
+        },
+        {
+          "patternId": "Hadolint_SC1081"
+        },
+        {
+          "patternId": "Hadolint_SC1083"
+        },
+        {
+          "patternId": "Hadolint_SC1086"
+        },
+        {
+          "patternId": "Hadolint_SC1087"
+        },
+        {
+          "patternId": "Hadolint_SC1095"
+        },
+        {
+          "patternId": "Hadolint_SC1097"
+        },
+        {
+          "patternId": "Hadolint_SC1098"
+        },
+        {
+          "patternId": "Hadolint_SC1099"
+        },
+        {
+          "patternId": "Hadolint_SC2002"
+        },
+        {
+          "patternId": "Hadolint_SC2015"
+        },
+        {
+          "patternId": "Hadolint_SC2026"
+        },
+        {
+          "patternId": "Hadolint_SC2028"
+        },
+        {
+          "patternId": "Hadolint_SC2035"
+        },
+        {
+          "patternId": "Hadolint_SC2140"
+        },
+        {
+          "patternId": "Hadolint_SC2154"
+        },
+        {
+          "patternId": "Hadolint_SC2164"
         }
       ]
     },
@@ -1200,6 +1285,12 @@
         },
         {
           "patternId": "Semgrep_problem-based-packs.insecure-transport.js-node.telnet-request.telnet-request"
+        },
+        {
+          "patternId": "Semgrep_bash.curl.security.curl-eval.curl-eval"
+        },
+        {
+          "patternId": "Semgrep_codacy.bash.security.hard-coded-password"
         }
       ]
     },
@@ -7006,6 +7097,77 @@
         },
         {
           "patternId": "PMD7_category_jsp_design_NoInlineScript"
+        }
+      ]
+    },
+    {
+      "toolId": "shellcheck",
+      "patterns": [
+        {
+          "patternId": "shellcheck_SC2001"
+        },
+        {
+          "patternId": "shellcheck_SC2002"
+        },
+        {
+          "patternId": "shellcheck_SC2003"
+        },
+        {
+          "patternId": "shellcheck_SC2004"
+        },
+        {
+          "patternId": "shellcheck_SC2006"
+        },
+        {
+          "patternId": "shellcheck_SC2015"
+        },
+        {
+          "patternId": "shellcheck_SC2016"
+        },
+        {
+          "patternId": "shellcheck_SC2020"
+        },
+        {
+          "patternId": "shellcheck_SC2022"
+        },
+        {
+          "patternId": "shellcheck_SC2024"
+        },
+        {
+          "patternId": "shellcheck_SC2025"
+        },
+        {
+          "patternId": "shellcheck_SC2026"
+        },
+        {
+          "patternId": "shellcheck_SC2027"
+        },
+        {
+          "patternId": "shellcheck_SC2028"
+        },
+        {
+          "patternId": "shellcheck_SC2029"
+        },
+        {
+          "patternId": "shellcheck_SC2031"
+        },
+        {
+          "patternId": "shellcheck_SC2033"
+        },
+        {
+          "patternId": "shellcheck_SC2034"
+        },
+        {
+          "patternId": "shellcheck_SC2035"
+        },
+        {
+          "patternId": "shellcheck_SC2036"
+        },
+        {
+          "patternId": "shellcheck_SC2086"
+        },
+        {
+          "patternId": "shellcheck_SC2148"
         }
       ]
     }

@@ -7,3 +7,4 @@ xlrd
 jinja2
 python-dotenv
 httpx
+itsdangerous

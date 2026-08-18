@@ -13,11 +13,6 @@
   <input type="file" id="input-carpeta" webkitdirectory multiple hidden>
   <button type="button" id="btn-carpeta" class="enlace-carpeta">o selecciona una carpeta</button>
 
-  <div class="turnstile-envoltura" id="turnstile-envoltura">
-    <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-callback="onTurnstileVerificado"></div>
-  </div>
-  <p class="turnstile-verificado" id="turnstile-verificado" hidden>&#10003; Verificado</p>
-
   <div class="pie-form">
     <span class="nota-pie">Los PDF no se almacenan: se procesan en memoria y se descartan.</span>
     <button type="submit">Generar</button>
