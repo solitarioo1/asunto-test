@@ -3,12 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Generador de correos - memorandums</title>
+<title>Utilidades - Correos</title>
 <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
+<nav class="nav-pestanas">
+  <a href="/memorandos" class="{% if activo == 'memorandos' %}nav-pestanas__link--activo{% endif %} nav-pestanas__link">Correos Memorando</a>
+  <a href="/padrones" class="{% if activo == 'padrones' %}nav-pestanas__link--activo{% endif %} nav-pestanas__link">Correos Padrones</a>
+  <a href="/validar_planillas" class="{% if activo == 'validar_planillas' %}nav-pestanas__link--activo{% endif %} nav-pestanas__link">Validar Planillas</a>
+</nav>
+
 <div class="tarjeta">
-  <div class="encabezado"><h2>Generador de Asunto + Cuerpo</h2></div>
+  <div class="encabezado"><h2>{% block titulo %}Generador de Asunto + Cuerpo{% endblock %}</h2></div>
 
   {% if error %}
   <p class="alerta">{{ error }}</p>

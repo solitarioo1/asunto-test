@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block titulo %}Validar Planillas{% endblock %}
+{% block content %}
+<p class="resumen">
+  Pares comparados: {{ reportes|length }} |
+  Alertas de archivo: {{ alertas_archivo|length }}
+</p>
+
+{% for r in reportes %}
+<div class="bloque">
+  <p>
+    <b>{{ r.nombre_memo }}</b> vs <b>{{ r.nombre_orden }}</b>
+    {% if r.veredicto == "cuadra" %}
+    <span class="veredicto veredicto--cuadra">Cuadra</span>
+    {% elif r.veredicto == "cuadra_con_observacion" %}
+    <span class="veredicto veredicto--observacion">Cuadra con observación de nombre</span>
+    {% else %}
+    <span class="veredicto veredicto--no-cuadra">No cuadra</span>
+    {% endif %}
+  </p>
+  <p class="resumen">
+    Memo: {{ r.n_personas_memo }} personas / S/ {{ "%.2f"|format(r.monto_total_memo) }} |
+    Orden de Pago: {{ r.n_personas_orden }} personas / S/ {{ "%.2f"|format(r.monto_total_orden) }}
+  </p>
+
+  {% if r.monto_distinto %}
+  <p><b>Monto distinto para la misma persona:</b></p>
+  {% for d in r.monto_distinto %}
+  <p class="alerta">{{ d.nombre }}: Memo S/ {{ "%.2f"|format(d.monto_memo) }} vs Orden de Pago S/ {{ "%.2f"|format(d.monto_orden) }}</p>
+  {% endfor %}
+  {% endif %}
+
+  {% if r.posibles_incidencias_formato %}
+  <p><b>Posibles diferencias de formato de nombre (mismo monto, verificar manualmente):</b></p>
+  {% for f in r.posibles_incidencias_formato %}
+  <p class="alerta">Memo: "{{ f.nombre_memo }}" — Orden de Pago: "{{ f.nombre_orden }}" (S/ {{ "%.2f"|format(f.monto) }})</p>
+  {% endfor %}
+  {% endif %}
+
+  {% if r.solo_en_memo %}
+  <p><b>Solo en Memo (no encontrado en Orden de Pago):</b></p>
+  {% for n in r.solo_en_memo %}
+  <p class="alerta">{{ n }}</p>
+  {% endfor %}
+  {% endif %}
+
+  {% if r.solo_en_orden %}
+  <p><b>Solo en Orden de Pago (no encontrado en Memo):</b></p>
+  {% for n in r.solo_en_orden %}
+  <p class="alerta">{{ n }}</p>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endfor %}
+
+{% if alertas_archivo %}
+<div class="alertas">
+  <h3>Alertas de archivo</h3>
+  {% for a in alertas_archivo %}
+  <p class="alerta">{{ a }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+<a class="btn-secundario" href="/validar_planillas">&larr; Subir otros archivos</a>
+{% endblock %}

@@ -6,8 +6,8 @@ import io
 from pathlib import Path
 
 from app.config import TURNSTILE_SITE_KEY
-from app.services.file_intake import recolectar_pdfs
-from app.services.pdf_extractor import CAMPOS_OBLIGATORIOS, armar_bloque_html, extraer_campos
+from app.services.memorandos.file_intake import recolectar_pdfs
+from app.services.memorandos.pdf_extractor import CAMPOS_OBLIGATORIOS, armar_bloque_html, extraer_campos
 from app.services.turnstile import verificar_turnstile
 
 router = APIRouter()
@@ -17,7 +17,7 @@ templates = Jinja2Templates(directory=Path(__file__).resolve().parent.parent.par
 @router.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse(
-        request, "index.html", {"turnstile_site_key": TURNSTILE_SITE_KEY}
+        request, "memorandos/index.html", {"turnstile_site_key": TURNSTILE_SITE_KEY, "activo": "memorandos"}
     )
 
 
@@ -31,10 +31,11 @@ async def procesar(
     if not await verificar_turnstile(cf_turnstile_response, ip_cliente):
         return templates.TemplateResponse(
             request,
-            "index.html",
+            "memorandos/index.html",
             {
                 "turnstile_site_key": TURNSTILE_SITE_KEY,
                 "error": "Verificación anti-bot fallida. Vuelve a intentarlo.",
+                "activo": "memorandos",
             },
         )
 
@@ -80,7 +81,7 @@ async def procesar(
 
     return templates.TemplateResponse(
         request,
-        "resultado.html",
+        "memorandos/resultado.html",
         {
             "turnstile_site_key": TURNSTILE_SITE_KEY,
             "total": total,
@@ -89,5 +90,6 @@ async def procesar(
             "n_descartado": n_descartado,
             "ok": ok,
             "bloques": bloques,
+            "activo": "memorandos",
         },
     )

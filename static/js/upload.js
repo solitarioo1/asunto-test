@@ -5,9 +5,22 @@
   const btnCarpeta = document.getElementById("btn-carpeta");
   const lista = document.getElementById("dropzone-lista");
 
+  document.querySelectorAll("[data-copiar]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      const pre = boton.closest(".bloque-correo-envoltura").querySelector(".bloque-correo");
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        const original = boton.textContent;
+        boton.textContent = "¡Copiado!";
+        setTimeout(() => { boton.textContent = original; }, 1500);
+      });
+    });
+  });
+
   if (!dropzone || !inputArchivos) return;
 
-  const EXTENSIONES_VALIDAS = [".zip", ".pdf"];
+  const EXTENSIONES_VALIDAS = (dropzone.dataset.extensiones || ".zip,.pdf")
+    .split(",")
+    .map((ext) => ext.trim());
 
   function tieneExtensionValida(nombre) {
     const nombreLower = nombre.toLowerCase();

@@ -2,6 +2,8 @@ fastapi
 uvicorn[standard]
 python-multipart
 pypdf
+openpyxl
+xlrd
 jinja2
 python-dotenv
 httpx

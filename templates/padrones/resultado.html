@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block titulo %}Correos Padrones{% endblock %}
+{% block content %}
+<p class="resumen">
+  Correos listos: {{ correos_listos|length }} |
+  Departamentos con observación: {{ grupos_con_alerta|length }} |
+  Alertas de archivo: {{ alertas_archivo|length }}
+</p>
+
+{% for correo in correos_listos %}
+<div class="bloque-correo-envoltura">
+  <div class="bloque-correo-cabecera">
+    <b>{{ correo.departamento }}</b> — adjuntos: {{ correo.archivos|join(", ") }}
+    <button type="button" class="btn-copiar" data-copiar>Copiar</button>
+  </div>
+  <pre class="bloque-correo">{{ correo.texto }}</pre>
+</div>
+{% endfor %}
+
+{% if grupos_con_alerta or alertas_archivo %}
+<div class="alertas">
+  <h3>Observaciones (no se generó correo o requieren revisión)</h3>
+
+  {% for grupo in grupos_con_alerta %}
+  <p class="alerta">
+    <b>{{ grupo.departamento }}</b>: {{ grupo.motivo }}
+    <br>{% for d in grupo.detalle %}{{ d }}<br>{% endfor %}
+  </p>
+  {% endfor %}
+
+  {% for a in alertas_archivo %}
+  <p class="alerta">{{ a }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+<a class="btn-secundario" href="/padrones">&larr; Subir otros archivos</a>
+{% endblock %}

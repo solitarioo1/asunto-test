@@ -46,6 +46,9 @@ Thumbs.db
 *.ipynb
 .ipynb_checkpoints/
 
+# Archivos Markdown (specs de trabajo, notas internas)
+*.md
+
 
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md

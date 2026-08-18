@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Correos Padrones{% endblock %}
+{% block formulario %}
+<form method="post" action="/padrones/procesar" enctype="multipart/form-data" id="form-subida">
+  <label class="etiqueta">Archivos (ZIP, Excels sueltos o una carpeta)</label>
+
+  <div class="dropzone" id="dropzone" data-extensiones=".zip,.xlsx">
+    <p class="dropzone__titulo">Arrastra tus archivos aquí</p>
+    <p class="dropzone__subtitulo">o haz clic para seleccionar (ZIP, XLSX)</p>
+    <p class="dropzone__lista" id="dropzone-lista"></p>
+  </div>
+
+  <input type="file" id="input-archivos" name="archivos" multiple accept=".zip,.xlsx" hidden>
+  <input type="file" id="input-carpeta" webkitdirectory multiple hidden>
+  <button type="button" id="btn-carpeta" class="enlace-carpeta">o selecciona una carpeta</button>
+
+  <div class="pie-form">
+    <span class="nota-pie">Los Excels no se almacenan: se procesan en memoria y se descartan.</span>
+    <button type="submit">Generar</button>
+  </div>
+</form>
+{% endblock %}

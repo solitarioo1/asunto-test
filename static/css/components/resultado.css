@@ -39,3 +39,62 @@
   font-size: 12px;
   margin: -8px 0 24px;
 }
+
+.bloque-correo-envoltura {
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.bloque-correo-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--fondo);
+  font-size: 13px;
+}
+
+.btn-copiar {
+  border: 1px solid var(--borde);
+  background: var(--blanco);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.bloque-correo {
+  margin: 0;
+  padding: 16px 20px;
+  background: var(--blanco);
+  white-space: pre-wrap;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 13px;
+}
+
+.veredicto {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border-radius: 8px;
+  padding: 3px 10px;
+  margin-left: 8px;
+}
+
+.veredicto--cuadra {
+  color: var(--negro);
+  background: var(--cyan-suave);
+  border: 1px solid var(--cyan);
+}
+
+.veredicto--observacion,
+.veredicto--no-cuadra {
+  color: var(--negro);
+  background: var(--naranja-suave);
+  border: 1px solid var(--naranja);
+}
