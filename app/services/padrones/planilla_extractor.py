@@ -5,7 +5,8 @@ from dataclasses import dataclass, field
 import openpyxl
 
 PATRON_NOMBRE = re.compile(
-    r"^([A-Z]+-\d+)_Planilla_\d+_([A-Za-z]+)_\d{4}-\d{4}\.xlsx$", re.IGNORECASE
+    r"^([A-Z]+-\d+)[\s_]+Planilla[\s_]+\d+[\s_]+(.+?)[\s_]+\d{4}-\d{4}\.xlsx$",
+    re.IGNORECASE,
 )
 
 FILA_TOTAL = 2
