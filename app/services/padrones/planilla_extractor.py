@@ -1,3 +1,4 @@
+import datetime
 import io
 import re
 from dataclasses import dataclass, field
@@ -9,16 +10,8 @@ PATRON_NOMBRE = re.compile(
     re.IGNORECASE,
 )
 
-FILA_TOTAL = 2
-FILA_INICIO_DATOS = 5
-
-COL_CODIGO_AVISO = 2   # [1] 0-based
-COL_PROVINCIA = 6      # [5] 0-based
-COL_MONTO = 10         # [9] 0-based
-COL_FECHA_ABONO = 16   # [15] 0-based
-
-COL_TOTAL_PERSONAS = 8   # aprox H, 0-based [7]
-COL_TOTAL_MONTO = 9      # aprox I/J, 0-based [8]/[9]
+MAX_FILAS_BUSQUEDA_ENCABEZADO = 15
+PATRON_BENEFICIARIOS = re.compile(r"(\d+)\s*BENEFICIARIO", re.IGNORECASE)
 
 
 @dataclass
@@ -56,6 +49,57 @@ def parse_nombre_archivo(nombre: str) -> tuple[str, str] | None:
     return m.group(1).upper(), m.group(2)
 
 
+def _encontrar_columna(encabezados: list[str], *fragmentos: str) -> int | None:
+    """Devuelve el índice (0-based) del primer encabezado que contenga alguno
+    de los fragmentos dados (comparación insensible a mayúsculas)."""
+    for idx, texto in enumerate(encabezados):
+        texto_norm = texto.upper()
+        if any(frag in texto_norm for frag in fragmentos):
+            return idx
+    return None
+
+
+def _encontrar_fila_encabezado(filas: list[tuple]) -> int | None:
+    """Busca, entre las primeras filas, la fila de encabezados reconociendo la
+    columna 'PROVINCIA' (presente tanto en planillas detalladas como en
+    resúmenes/tablas dinámicas por departamento)."""
+    limite = min(len(filas), MAX_FILAS_BUSQUEDA_ENCABEZADO)
+    for idx in range(limite):
+        celdas = [str(v).strip().upper() if v is not None else "" for v in filas[idx]]
+        if "PROVINCIA" in celdas:
+            return idx
+    return None
+
+
+def _primera_fecha(filas: list[tuple]) -> object | None:
+    for fila in filas:
+        for valor in fila:
+            if isinstance(valor, (datetime.date, datetime.datetime)):
+                return valor
+    return None
+
+
+def _fila_total_declarado(filas: list[tuple]) -> tuple[float | None, float | None]:
+    """Busca una fila con la etiqueta 'TOTAL' y extrae de ahí la cantidad de
+    beneficiarios declarada (ej. '6 BENEFICIARIOS') y el monto total (la
+    última celda numérica de esa fila)."""
+    for fila in filas:
+        celdas = list(fila)
+        if not any(str(v).strip().upper() == "TOTAL" for v in celdas if v is not None):
+            continue
+
+        personas = None
+        monto = None
+        for valor in celdas:
+            m = PATRON_BENEFICIARIOS.search(str(valor)) if valor is not None else None
+            if m:
+                personas = float(m.group(1))
+            if isinstance(valor, (int, float)):
+                monto = float(valor)
+        return personas, monto
+    return None, None
+
+
 def leer_planilla(nombre: str, datos: bytes) -> ResultadoPlanilla:
     resultado = ResultadoPlanilla(nombre_archivo=nombre)
 
@@ -71,31 +115,54 @@ def leer_planilla(nombre: str, datos: bytes) -> ResultadoPlanilla:
     try:
         wb = openpyxl.load_workbook(io.BytesIO(datos), data_only=True, read_only=True)
         ws = wb.active
+        filas = list(ws.iter_rows(values_only=True))
     except Exception as e:
         resultado.error = f"no se pudo abrir el Excel: {e}"
         return resultado
 
-    fila_total = list(ws.iter_rows(min_row=FILA_TOTAL, max_row=FILA_TOTAL))
-    if fila_total:
-        celdas = fila_total[0]
-        resultado.total_declarado_personas = _num(celdas[COL_TOTAL_PERSONAS - 1].value if len(celdas) >= COL_TOTAL_PERSONAS else None)
-        resultado.total_declarado_monto = _num(celdas[COL_TOTAL_MONTO - 1].value if len(celdas) >= COL_TOTAL_MONTO else None)
+    idx_encabezado = _encontrar_fila_encabezado(filas)
+    if idx_encabezado is None:
+        resultado.error = "no se encontró la columna 'PROVINCIA' en el Excel"
+        return resultado
 
-    for fila in ws.iter_rows(min_row=FILA_INICIO_DATOS):
-        codigo_aviso = fila[COL_CODIGO_AVISO - 1].value if len(fila) >= COL_CODIGO_AVISO else None
-        if codigo_aviso in (None, ""):
-            continue
+    encabezados = [str(v).strip().upper() if v is not None else "" for v in filas[idx_encabezado]]
+    col_provincia = _encontrar_columna(encabezados, "PROVINCIA")
+    col_monto = _encontrar_columna(encabezados, "MONTO")
+    col_fecha = _encontrar_columna(encabezados, "FECHA")
+    col_cuenta = _encontrar_columna(encabezados, "CUENTA DE")
 
-        provincia = fila[COL_PROVINCIA - 1].value if len(fila) >= COL_PROVINCIA else None
-        monto = _num(fila[COL_MONTO - 1].value if len(fila) >= COL_MONTO else None)
-        fecha = fila[COL_FECHA_ABONO - 1].value if len(fila) >= COL_FECHA_ABONO else None
+    # Detalle (una fila = una persona, ej. Puno) vs. resumen/tabla dinámica
+    # (una fila = un grupo ya agregado con conteo y suma, ej. Huancavelica).
+    es_detalle = any(
+        "NOMBRES" in enc or "DNI" in enc or "CÓDIGO DE AVISO" in enc or "CODIGO DE AVISO" in enc
+        for enc in encabezados
+    )
 
-        if provincia is None:
+    filas_previas = filas[:idx_encabezado]
+    fecha_fallback = None if col_fecha is not None else _primera_fecha(filas_previas)
+    resultado.total_declarado_personas, resultado.total_declarado_monto = _fila_total_declarado(filas_previas)
+
+    for fila in filas[idx_encabezado + 1:]:
+        provincia = fila[col_provincia] if col_provincia is not None and col_provincia < len(fila) else None
+        if provincia in (None, ""):
             continue
         provincia = str(provincia).strip()
 
+        monto = _num(fila[col_monto]) if col_monto is not None and col_monto < len(fila) else None
+
+        if es_detalle:
+            n_beneficiarios = 1
+        else:
+            crudo = fila[col_cuenta] if col_cuenta is not None and col_cuenta < len(fila) else None
+            n_beneficiarios = int(_num(crudo) or 1)
+
+        if col_fecha is not None and col_fecha < len(fila):
+            fecha = fila[col_fecha]
+        else:
+            fecha = fecha_fallback
+
         grupo = resultado.grupos_provincia.setdefault(provincia, GrupoProvincia(provincia))
-        grupo.n_beneficiarios += 1
+        grupo.n_beneficiarios += n_beneficiarios
         grupo.monto += monto or 0.0
 
         if fecha not in (None, ""):

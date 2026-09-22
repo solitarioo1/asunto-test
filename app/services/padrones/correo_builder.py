@@ -1,6 +1,20 @@
+import datetime
 from dataclasses import dataclass, field
 
 from app.services.padrones.planilla_extractor import ResultadoPlanilla
+
+MESES_ES = {
+    1: "enero", 2: "febrero", 3: "marzo", 4: "abril", 5: "mayo", 6: "junio",
+    7: "julio", 8: "agosto", 9: "setiembre", 10: "octubre", 11: "noviembre", 12: "diciembre",
+}
+
+
+def _fmt_fecha(fecha) -> str:
+    if isinstance(fecha, (datetime.date, datetime.datetime)):
+        return f"{fecha.day} de {MESES_ES.get(fecha.month, fecha.month)}"
+    if fecha in (None, ""):
+        return "[FECHA NO ENCONTRADA]"
+    return str(fecha)
 
 
 @dataclass
@@ -35,15 +49,16 @@ def _texto_correo(grupo: CorreoDepartamento) -> str:
     total_personas = sum(b.n_productores for b in grupo.bullets)
     total_monto = sum(b.monto for b in grupo.bullets)
 
+    fecha_fmt = _fmt_fecha(grupo.fecha)
     if total_personas == 1:
         linea_personas = (
             f"De manera atenta, envío adjunta la relación de 1 persona, cuyo pago fue "
-            f"realizado el {grupo.fecha}."
+            f"realizado el {fecha_fmt}."
         )
     else:
         linea_personas = (
             f"De manera atenta, envío adjunta la relación de {total_personas} personas, "
-            f"cuyos pagos fueron realizados el {grupo.fecha}."
+            f"cuyos pagos fueron realizados el {fecha_fmt}."
         )
 
     lineas_bullets = []
